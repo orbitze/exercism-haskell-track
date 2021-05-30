@@ -34,10 +34,7 @@
 -}
 
 
-
-
 module Phone (number) where
-
 
 number :: String -> Maybe String
 
@@ -46,8 +43,8 @@ number xs | isValid   = Just plainStr
 
            where plainStr = makePlain
 
-                 --takes the given string and returns another string consisting of only
-                 --only such chars that represent numbers, disregards everything else.
+                 {- takes a string and returns another string consisting of only
+                    such chars from the given string that represent numbers. -}
                  
                  makePlain | take 2 xs == "+1" = res 2
                            | take 1 xs == "1"  = res 1
@@ -56,16 +53,16 @@ number xs | isValid   = Just plainStr
                             where res n = [x | x <- drop n xs, x >= '0', x <= '9']
                 
 
-                 --checks if the obtained 'plainStr' is of valid format: NXXNXXXXXX
-                 --where N <- [2..9], X <- [0..9] and length of the phone no. = 10.
+                 {- checks if the obtained 'plainStr' is of valid format: NXXNXXXXXX
+                    where N <- [2..9], X <- [0..9] and length of the phone no. = 10. -}
               
                  isValid = length plainStr == 10
                            && not (elem (plainStr !! 0) "01")
                            && not (elem (plainStr !! 3) "01")
 
 
---Note: The case where country code is a value other than '1', gets 
-  --handled automatically by the tests laid under 'isValid' predicate.
+{- Note: The case where country code is a value other than '1', gets 
+   handled automatically by the tests laid under 'isValid' predicate. -}
 
 
 
