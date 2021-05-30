@@ -1,10 +1,29 @@
+{-- 				INSTRUCTIONS 
+	
+	Given a year, report if it is a leap year.
+
+	The tricky thing here is that a leap year in the Gregorian calendar occurs:
+
+	on every year that is evenly divisible by 4
+	  except every year that is evenly divisible by 100
+	    unless the year is also evenly divisible by 400
+
+	For example, 1997 is not a leap year, but 1996 is. 1900 is not a leap year, but 2000 is.
+
+	Hints
+	To complete this exercise you need to implement the function isLeapYear that takes a year 
+	and determines whether it is a leap year.
+-}
+
+
 module LeapYear (isLeapYear) where
 
 isLeapYear :: Integer -> Bool
 isLeapYear year = (rem year 4 == 0) && (rem year 100 /= 0 || rem year 400 == 0) 
 
 
-{-
+{-  Following is for my own understanding: 
+
 	2015		F && ...			= F
 	1970		F && ...			= F
 	1996		T && (T||...)			= T
