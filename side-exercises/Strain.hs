@@ -11,18 +11,14 @@
 
 	1, 2, 3, 4, 5
 	And the predicate:
-
 	is the number even?
+	
 	Then your keep operation should produce:
-
 	2, 4
 	While your discard operation should produce:
-
 	1, 3, 5
+	
 	Note that the union of keep and discard is all the elements.
-
-	The functions may be called keep and discard, or they may need different names in order to 
-	not clash with existing functions or concepts in your language.
 
 	Restrictions
 	Keep your hands off that filter/reject/whatchamacallit functionality provided by your standard library! 
@@ -30,10 +26,7 @@
 
 -}
 
-
-
 module Strain (keep, discard) where
-
 
 keep :: (a -> Bool) -> [a] -> [a]
 keep p xs = [x | x <- xs, p x] 
@@ -42,15 +35,13 @@ discard :: (a -> Bool) -> [a] -> [a]
 discard p xs = keep (not . p) xs
 
 
-{-
-	SOLUTION USING RECURSION:
+{-	RECURSIVE SOLUTION:
 
-	keep :: (a -> Bool) -> [a] -> [a]
-	keep _ [] = []
-	keep p (x:xs) | p x = x : keep p xs
-	              | otherwise = keep p xs 
+    keep :: (a -> Bool) -> [a] -> [a]
+    keep _ [] = []
+    keep p (x:xs) | p x = x : keep p xs
+		  | otherwise = keep p xs 
 
-
-	discard :: (a -> Bool) -> [a] -> [a]
-	discard p xs = keep (not . p) xs
+    discard :: (a -> Bool) -> [a] -> [a]
+    discard p xs = keep (not . p) xs
 -}
