@@ -36,33 +36,37 @@
 
 module Phone (number) where
 
+
 number :: String -> Maybe String
 
-number xs | isValid   = Just plainStr
+number xs | isValid   = Just plainNum
           | otherwise = Nothing
 
-           where plainStr = makePlain
+          where plainNum | withCountryCode = drop 1 cleansedNum
+                         | otherwise       = cleansedNum
 
-                 {- takes a string and returns another string consisting of only
-                    such chars from the given string that represent numbers. -}
-                 
-                 makePlain | take 2 xs == "+1" = res 2
-                           | take 1 xs == "1"  = res 1
-                           | otherwise         = res 0
-
-                            where res n = [x | x <- drop n xs, x >= '0', x <= '9']
+                         where cleansedNum = [x | x <- xs, x >= '0', x <= '9']
+                               withCountryCode = length cleansedNum == 11 && cleansedNum !! 0 == '1'
                 
-
-                 {- checks if the obtained 'plainStr' is of valid format: NXXNXXXXXX
-                    where N <- [2..9], X <- [0..9] and length of the phone no. = 10. -}
-              
-                 isValid = length plainStr == 10
-                           && not (elem (plainStr !! 0) "01")
-                           && not (elem (plainStr !! 3) "01")
+                isValid = length plainNum == 10   
+                          && not (elem (plainNum !! 0) "01")
+                          && not (elem (plainNum !! 3) "01")
 
 
-{- Note: The case where country code is a value other than '1', gets 
-   handled automatically by the tests laid under 'isValid' predicate. -}
+{- Explanation:
 
+
+  "cleansedNum" is the string devoid of any punctuation marks.
+  
+  "plainNum" is the string devoid of the 'valid' country code BUT may include
+   the invalid country code, in which case it becomes a string of length exceeding
+   10, and shall get rejected in the 'length-test' laid under "isValid" predicate.
+
+  "isValid" is a predicate that takes in 'plainNum' and applies 'validity tests' to
+   it to check whether it's in the given valid format or not, where
+
+      Valid format is: "NXXNXXXXXX", N <- [2..9], X <- [0..9] and length = 10
+ 
+-}
 
 
