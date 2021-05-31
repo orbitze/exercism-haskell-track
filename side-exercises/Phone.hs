@@ -39,34 +39,26 @@ module Phone (number) where
 
 number :: String -> Maybe String
 
-number xs | isValid   = Just plainNum
+number xs | isValid   = Just cleanNum
           | otherwise = Nothing
-
-          where plainNum | withCountryCode = drop 1 cleansedNum
-                         | otherwise       = cleansedNum
-
-                         where cleansedNum = [x | x <- xs, x >= '0', x <= '9']
-                               withCountryCode = length cleansedNum == 11 && cleansedNum !! 0 == '1'
-                
-                isValid = length plainNum == 10   
-                          && not (elem (plainNum !! 0) "01")
-                          && not (elem (plainNum !! 3) "01")
+            
+          where cleanNum | length temp == 11 && temp !! 0 == '1' = drop 1 temp 
+                         | otherwise                             = temp
+                            
+                         where temp = [d | d <- xs, d >= '0' && d <= '9']
+                             
+                isValid = length cleanNum == 10 && elem (cleanNum !! 0) ['2'..'9'] && elem (cleanNum !! 3) ['2'..'9'] 
 
 
-{- Explanation:
-
-
-  "cleansedNum" is the string devoid of any punctuation marks.
-  
-  "plainNum" is the string devoid of the 'valid' country code BUT may include
-   the invalid country code, in which case it becomes a string of length exceeding
-   10, and shall get rejected in the 'length-test' laid under "isValid" predicate.
-
-  "isValid" is a predicate that takes in 'plainNum' and applies 'validity tests' to
-   it to check whether it's in the given valid format or not, where
-
-      Valid format is: "NXXNXXXXXX", N <- [2..9], X <- [0..9] and length = 10
- 
+{- Explanation of the approach:
+   
+   Step 1. From the given string, a new string consisting of only digit chars is stored as "temp".
+   Step 2. If 'temp' is of length 11 and has '1' as its first char, then excluding that char, the
+           rest of the string is stored as "cleanNum".
+           If 'temp' is not of length 10, then it is as it is stored as "cleanNum".
+   Step 3. Now, 'cleanNum' is tested for valid format check: 
+           length should be 10 AND 1st and 3rd chars must be in the range [2..9]
+           If 'cleanNum' passes all 3 tests, it is VALID. Otherwise, it is INVALID    
 -}
 
 
