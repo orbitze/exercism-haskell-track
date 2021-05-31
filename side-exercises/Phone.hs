@@ -40,14 +40,15 @@ module Phone (number) where
 number :: String -> Maybe String
 
 number xs | isValid   = Just cleanNum
-          | otherwise = Nothing
-            
-          where cleanNum | length temp == 11 && temp !! 0 == '1' = drop 1 temp 
-                         | otherwise                             = temp
-                            
-                         where temp = [d | d <- xs, d >= '0' && d <= '9']
+          | otherwise = Nothing  
+           
+    where isValid = length cleanNum == 10 
+                    && elem (cleanNum !! 0) ['2'..'9'] 
+                    && elem (cleanNum !! 3) ['2'..'9'] 
+                  
+          cleanNum = if length temp == 11 && temp !! 0 == '1' then drop 1 temp else temp
                              
-                isValid = length cleanNum == 10 && elem (cleanNum !! 0) ['2'..'9'] && elem (cleanNum !! 3) ['2'..'9'] 
+              where temp = [d | d <- xs, d >= '0' && d <= '9']
 
 
 {- Explanation of the approach:
