@@ -29,3 +29,9 @@ distance xs ys | length xs /= length ys = Nothing
                | otherwise              = Just diff
                
                where diff = length $ filter (== True) $ zipWith (/=) xs ys
+
+
+
+
+
+               
