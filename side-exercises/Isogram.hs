@@ -21,18 +21,19 @@ module Isogram (isIsogram) where
 import Data.Char
 
 isIsogram :: String -> Bool
-isIsogram str = plainStr == processedStr
+isIsogram str = plainstr == (rmdups plainstr)
     where 
-      processedStr = foldl (\acc x -> if elem x acc then acc else acc ++ [x]) [] plainStr
-      plainStr = [ch | ch <- map toLower str, ch `elem` ['a'..'z']]
+      plainstr = filter isAlpha (map toLower str)
+      remdups = foldr (\x ls -> x : filter (/= x) ls) [] 
 
 
 {-
-    'plainStr' is the original string, just converted to lowercase 
-     and devoid of all the punctuation marks
+    'plainStr' is the original string converted to lowercase 
+     and rendered free of all punctuation marks
 
-    'processedStr' is the plainStr, just devoid of any repeated chars
+     <remdups> function removes duplicate letters from 'plainstr'  
 
-     If plainStr and processedStr come to be equal strings, the input
-     str is declared as an "isogram"  
+     Next, comparison is made between the 2 so obtained strings
+     If they match, the given string is an isogram, otherwise it's not.
 -}
+
